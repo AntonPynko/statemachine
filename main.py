@@ -1,27 +1,23 @@
-from class1 import Sensor
-import random
-import threading
-
-def printer(Sensor, event):
-    event.set() # установка флажка потоком, т.к. у нас всего один поток, то сброс флажка можно опустить
-    output = Sensor.generate_data().copy() # принимаем показания датчика в словарь output
-    for item in output: # цикл вывода всех снятых показаний датчика
-        print("Температура: {}".format(output[item]))
-
-
-def main():
-    min1 = random.randint(0, 10) # задание минимального значения диапазона
-    max1 = random.randint(20, 30) # задание максимального значения диапазона
-    range1 = {"min": min1,
-             "max": max1}
-
-    sensor1 = Sensor("sensor1", 3, range1)
-
-    e1 = threading.Event()
-    t1 = threading.Thread(target=printer, args=(sensor1, e1))
-    t1.start()
-    t1.join()
+from statemachine import StateMachine
 
 if __name__ == "__main__":
-    main()
+    device = StateMachine()
+    #device.set_start('Temperature')
+    #print(device.state)
+    device.on_event('Humidity')  # Подача состояний по одному
+    device.on_event('100')
+    print(device.state)
+    device.on_event('Temperature')
+    device.on_event('30')
+    print(device.state)
+    device.on_event('Emptiness')
+    device.on_event('30')
+    print(device.state)
+    events = ('Temperature', '30')   # Передача кортежа (или списка) из состояний
+    device.run_all(events)
+    print(device.state)
+
+
+
+
 

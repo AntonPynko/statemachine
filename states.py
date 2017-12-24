@@ -1,4 +1,4 @@
-from constants import keyTemp, keyHum, keyEmp, TemperatureRange, HumidityRange, EmptinessRange
+﻿from constants import Consts
 
 
 class State:
@@ -27,7 +27,7 @@ class TemperatureState(State):  # Состояние температуры
             int(value)
         except ValueError:
             return ErrorState()
-        if int(value) in TemperatureRange:
+        if int(value) in Consts.TemperatureRange:
             return PosState()
         else:
             return NegState()
@@ -39,7 +39,7 @@ class HumidityState(State):  # Состояние влажности
             int(value)
         except ValueError:
             return ErrorState()
-        if int(value) in HumidityRange:
+        if int(value) in Consts.HumidityRange:
             return PosState()
         else:
             return NegState()
@@ -51,16 +51,16 @@ class EmptinessState(State):   # Состояние заполненности �
             int(value)
         except ValueError:
             return ErrorState()
-        if int(value) in EmptinessRange:
+        if int(value) in Consts.EmptinessRange:
             return PosState()
         else:
             return NegState()
 
 
 eventNames = {  # Словарь с возможными входными состояниями
-    keyTemp: TemperatureState(),
-    keyHum: HumidityState(),
-    keyEmp: EmptinessState()
+    Consts.keyTemp: TemperatureState(),
+    Consts.keyHum: HumidityState(),
+    Consts.keyEmp: EmptinessState()
 }
 
 
@@ -83,6 +83,4 @@ class ErrorState(State):
         if event in eventNames:
             return eventNames[event]
         return self
-
-
 
